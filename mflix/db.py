@@ -76,12 +76,6 @@ def get_movies_by_country(countries):
         Remember that in MongoDB, the $in operator can be used with a list to
         match one or more values of a specific field.
         """
-
-        # TODO: Projection
-        # Find movies matching the "countries" list, but only return the title
-        # and _id. Do not include a limit in your own implementation, it is
-        # included here to avoid sending 46000 documents down the wire.
-
         return list(db.movies.find( { "countries": { "$in": countries }  }, { "title": 1 } ))
 
     except Exception as e:
