@@ -1,1 +1,6 @@
 .ini 
+.vscode/
+
+# Pytest cache
+.cache/
+**/__pycache__/
