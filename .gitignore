@@ -4,3 +4,6 @@
 # Pytest cache
 .cache/
 **/__pycache__/
+
+# NoteBook cache
+notebooks/.ipynb_checkpoints/
