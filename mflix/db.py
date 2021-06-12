@@ -10,6 +10,7 @@ Look out for TODO markers for additional help. Good luck!
 
 
 from flask import current_app, g
+from pymongo import write_concern
 from werkzeug.local import LocalProxy
 
 from pymongo import MongoClient, DESCENDING, ASCENDING
@@ -387,6 +388,7 @@ def add_user(name, email, hashedpw):
     """
 
     try:
+        db.users.with_options(write_concern=WriteConcern(w=2))
         insert_result = db.users.insert_one(
             {
                 "name": name,
