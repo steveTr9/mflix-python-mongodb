@@ -9,6 +9,7 @@ Look out for TODO markers for additional help. Good luck!
 """
 
 
+from bson.decimal128 import Decimal128
 from flask import current_app, g
 from pymongo import write_concern
 from werkzeug.local import LocalProxy
@@ -248,6 +249,21 @@ def get_movie(id):
         # TODO: Get Comments
         # Implement the required pipeline.
         pipeline = [{"$match": {"_id": ObjectId(id)}}]
+        pipeline.append(
+            {
+                "$lookup": {
+                    "from": "comments",
+                    "let": {"id": "$_id"},
+                    "pipeline": [
+                        {
+                            "$match": {"$expr": {"$eq": ["$movie_id", "$$id"]}},
+                        },
+                        {"$sort": {"date": DESCENDING}},
+                    ],
+                    "as": "comments",
+                }
+            }
+        )
 
         movie = db.movies.aggregate(pipeline).next()
         return movie
