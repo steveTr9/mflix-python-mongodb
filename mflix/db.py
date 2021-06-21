@@ -10,6 +10,7 @@ Look out for TODO markers for additional help. Good luck!
 
 
 from bson.decimal128 import Decimal128
+from bson.errors import InvalidId
 from flask import current_app, g
 from pymongo import write_concern
 from werkzeug.local import LocalProxy
@@ -49,7 +50,8 @@ def get_db():
         db = g._database = MongoClient(
             MFLIX_DB_URI,
             maxPoolSize=50,
-            connectTimeoutMS=2500,
+            w="majority",
+            wtimeout=2500,
         )[MFLIX_DB_NAME]
     return db
 
@@ -268,7 +270,7 @@ def get_movie(id):
 
     # TODO: Error Handling
     # If an invalid ID is passed to `get_movie`, it should return None.
-    except (StopIteration) as _:
+    except (InvalidId) as _:
 
         """
         Ticket: Error Handling
